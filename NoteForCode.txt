@@ -1,0 +1,22 @@
++, Lưu ý phần code khi không thể dùng Repository.delete(Entity) vì mối quan hệ trong Entity được đặt là EAGER nó khiến  Object khi lấy ra sẽ lấy cả quan hệ của nó dẫn đến câu lệnh Jpa sẽ tìm kiếm set cả mối quan hệ nên không thể Delete entity đươc => chuyển fetch thành Lazy;
++, Phần không thể update entity vì lỗi
+
+
++, chưa bắt exception nếu tài file quá lớn (hãy hoàn thiện vào 1 lúc nào đó)
++, Chưa chỉnh Pagination để trong trường hợp có quá nhiều page sẽ chỉ hiện page của 4 ô giá trị gần kề currentPage ;
+
+
+
+-, Các kiểu nhận và truyền dữ liệu từ thymleaf về controller:
+1,@PathVariable: url truyền về sẽ có kiểu "/url/{variable}" và Controller sẽ gọi nó ra VD:
+ public String getPage(Model model, @PathVariable int variable){
+
+ }
+ Còn trên thymleaf thì sẽ truyền tham số qua thẻ a VD:
+ <a th:href="@{'/url/'+${i}}">
+
+ 3,@RequestParam
+
+ 2,@Param : url truyển sẽ có kiểu là "/url/2?sortBy=username";
+ trên thymleaf sẽ là 1 thẻ a :  <a th:href="@{'/url/'+${currentPage}+'?sortBy=username'}">
+

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="pages-blank::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:replace="pages-blank::header"></header>
+<div th:insert="pages-blank::sidebar"></div>
+<main class="main" id="main">
+
+    <form th:object="${book}" th:action="@{/admin/addBook}" method="post" enctype="multipart/form-data">
+        <input type="hidden"  th:field="*{id}">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}">
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" th:field="*{description}">
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="text" class="form-control" id="price" th:field="*{price}">
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="text" class="form-control" id="quantity" th:field="*{quantity}">
+        </div>
+
+        <div class="mb-3">
+            <label for="country" class="form-label">Country</label>
+            <select class="form-control" id="country" th:field="*{country.id}">
+
+                <option th:each="country : ${listCountry}" th:value="${country.id}" th:text="${country.name}"
+                        th:selected="${country.id==3}"
+                ></option>
+            </select>
+        </div>
+
+        <label  class="form-label">Availability</label>
+        <div class="mb-3">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" th:value="true" th:field="*{availability}" checked>
+            <label class="form-check-label" for="flexRadioDefault1" >
+                In stock
+            </label>
+        </div>
+        <div class="mb-3">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked th:value="false" th:field="*{availability}">
+            <label class="form-check-label" for="flexRadioDefault2">
+                Out of stock
+            </label>
+        </div>
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="avatar">Upload Avatar</label>
+            <input type="file" class="form-control" id="avatar" name="img">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</main>
+
+<footer th:replace="pages-blank::footer">
+
+</footer>
+<div th:insert="pages-blank::js"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+

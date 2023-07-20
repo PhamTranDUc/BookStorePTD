@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="pages-blank::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header th:replace="pages-blank::header">
+</header>
+<div th:insert="pages-blank::sidebar"></div>
+<main class="main" id="main">
+
+    <!--        begin search bar-->
+    <form th:action="@{/admin/books}" th:method="get">
+    <div class="d-flex form-inputs" style="margin:20px">
+
+        <input class="form-control" type="text" placeholder="Search any book..." name="keyWord">
+        <input type="hidden"  name="sortBy" th:value="name">
+        <input  type="hidden"  name="sortType" th:value="asc">
+        <input type="hidden"  name="currentPage" th:value="1">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+    </form>
+<!--    end search-->
+
+
+    <style>
+        .active-page {
+            /* Định nghĩa giao diện cho nút của trang hiện tại ở đây */
+            background-color: #dc3545; /* Ví dụ: đổi màu nền thành màu xanh lá cây */
+        }
+    </style>
+
+    <a type="button" class="btn btn-primary" th:href="@{/admin/formBook}" style="margin-bottom: 10px">Add book</a>
+    <a th:href="@{/admin/books}"></a>
+        <table class="table table-dark table-hover" >
+            <thead>
+            <tr>
+                <th scope="col">
+                    <a th:href="@{'/admin/books/'+${currentPage}+'?sortBy=id'+'&sortType='+${reverser}}">Id</a>
+                </th>
+                <th scope="col">
+                    <a th:href="@{'/admin/books/'+${currentPage}+'?sortBy=name'+'&sortType='+${reverser}}">Name</a>
+                </th>
+                <th scope="col">Description</th>
+                <th scope="col">
+                    <a th:href="@{'/admin/books/'+${currentPage}+'?sortBy=price'+'&sortType='+${reverser}}">Price</a>
+                </th>
+                <th scope="col">
+                    <a th:href="@{'/admin/books/'+${currentPage}+'?sortBy=quantity'+'&sortType='+${reverser}}">Quantity</a>
+
+                </th>
+                <th scope="col">Country</th>
+                <th scope="col">Image</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${listBook}">
+                <td th:text="${book.id}"></td>
+                <td  th:text="${book.name}"></td>
+                <td  th:text="${#strings.length(book.description)>30?
+                #strings.substring(book.description,0,30)+'...' : book.description
+                }"></td>
+                <td th:text="${book.price}"></td>
+                <td th:text="${book.quantity}"></td>
+                <td th:text="${book.country?.name}"></td>
+<!--                <td><img th:src="@{'/img/'+${user.img.filePath}}" width="100" height="100"></td>-->
+                <td><img th:src="@{'/img/'+${book.pathImg}}" width="100" height="100"></td>
+
+<!--                <td><img src="../static/img/+${book.pathImg}" th:src="@{'/img/'+${book.pathImg}}" width="100" height="100"></td>-->
+
+                <td >
+                    <a type="button" class="btn btn-secondary" th:href="@{/admin/formEditBook/{id}(id=${book.id})}">Update</a>
+                    <a type="button" class="btn btn-danger" th:href="@{/admin/deleteBook/{id}(id=${book.id})}">Delete</a>
+
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    <div class="container">
+        <div>Total item:[[${totalItem}]]/Total Page:[[${totalPage}]]
+
+            <a class="btn btn-primary" th:href="@{'/admin/books/'+'1'+'?sortBy='+${sortBy}+'&sortType='+${sortType}}">First</a>
+            <a class="btn btn-primary" th:href="@{'/admin/books/'+${currentPage-1}+'?sortBy='+${sortBy}+'&sortType='+${sortType}}">Previous</a>
+            <span th:each="i: ${#numbers.sequence(1,totalPage)}">
+                <a class="btn btn-primary" th:classappend="${currentPage == i} ? 'active-page' :''"  th:href="@{'/admin/books/'+${i}}+'?sortBy='+${sortBy}+'&sortType='+${sortType}">[[${i}]]</a>
+            </span>
+            <a class="btn btn-primary" th:href="@{'/admin/books/'+${currentPage+1}+'?sortBy='+${sortBy}+'&sortType='+${sortType}}">Next</a>
+            <a class="btn btn-primary" th:href="@{'/admin/books/'+${totalPage}+'?sortBy='+${sortBy}+'&sortType='+${sortType}}">Last</a>
+        </div>
+
+
+
+    </div>
+
+
+</main>
+
+<footer th:replace="pages-blank::footer">
+
+</footer>
+<div th:insert="pages-blank::js"></div>
+</body>
+</html>
