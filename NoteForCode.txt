@@ -1,4 +1,6 @@
 +, Lưu ý phần code khi không thể dùng Repository.delete(Entity) vì mối quan hệ trong Entity được đặt là EAGER nó khiến  Object khi lấy ra sẽ lấy cả quan hệ của nó dẫn đến câu lệnh Jpa sẽ tìm kiếm set cả mối quan hệ nên không thể Delete entity đươc => chuyển fetch thành Lazy;
++, Luôn đặt thư mục root là thư mục mẹ của file pom.xml
+
 +, Phần không thể update entity vì lỗi
 
 
