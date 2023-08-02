@@ -37,4 +37,6 @@ public class ConfigSecurity {
                 ).logout(logout-> logout.permitAll());
         return httpSecurity.build();
     }
+    
+    
 }

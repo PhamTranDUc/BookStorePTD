@@ -13,12 +13,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class BookController {
-    private static final String PATH_FOLDER_IMGBOOK="D:\\springBoot2023\\bookStorePTD\\bookStorePTD\\src\\main\\resources\\static\\img\\";
+    private static final String PATH_FOLDER_IMGBOOK= new File("upload").getAbsolutePath();
 
     private BookServiceImpl bookService;
     private CountryService countryService;
@@ -85,16 +88,17 @@ public class BookController {
 
 
     @PostMapping("/admin/addBook")
-    public String addBook(@ModelAttribute("book") Book book, @RequestParam(name = "img")MultipartFile file) {
+    public String addBook(@ModelAttribute("book") Book book, @RequestParam(name = "img")MultipartFile file) throws IOException {
         Long id = book.getCountry().getId();
         Country country = countryService.findById(id);
         book.setCountry(country);
         String filePath=file.getOriginalFilename();
-        try {
-            file.transferTo(new File(PATH_FOLDER_IMGBOOK+filePath));
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        
+        
+        StringBuilder fileNames = new StringBuilder();
+        Path fileNameAndPath=Paths.get(PATH_FOLDER_IMGBOOK,file.getOriginalFilename());
+        Files.write(fileNameAndPath, file.getBytes());
+        
 
         if (book.getId() != null) {
             Book existingBook = bookService.findById(book.getId());
@@ -115,7 +119,7 @@ public class BookController {
             }
         } else {
             // Save new book
-            book.setPathImg(filePath);
+//            book.setPathImg(filePath);
             bookService.addBook(book);
         }
 
